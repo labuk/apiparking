@@ -1,3 +1,29 @@
+Prueba PHP
+Debido a una nueva legislación, los restaurantes necesitan tener información disponible acerca de los alérgenos que tiene cada plato que sirven. Un plato tiene varios ingredientes, y un ingrediente puede tener varios alérgenos.
+Un restaurante ha contratado una aplicación movil que gestione para sus camareros cualquier duda de los clientes acerca de esta materia. La implementación de dicha app nos es transparente, salvo porque hace uso de una API Rest que le servirá la información que necesita.
+
+Implementa un pequeño sistema que se componga de:
+
+- Una base de datos que almacene los platos y sus alérgenos.
+- Una API Rest que devuelva los alérgenos de un plato dado, o los platos en los que aparece un alérgeno concreto, y permita añadir ingredientes, platos y alérgenos.
+(No será necesario un sistema de usuarios ni roles)
+
+Bonus: Supongamos que un cocinero puede realizar cambios sobre los ingredientes de un plato. Diseña y, si puedes, implementa un sistema para que quede un registro de cambios sobre los platos.
+
+A tener en cuenta en el desarrollo:
+
+- Deberá contar con tests automáticos
+- La limpieza de código (principios SOLID y Clean Code), el uso inteligente de principios arquitectónicos y patrones para el desacoplamiento entre capas son puntos que valoramos mucho
+
+Tecnologías a emplear:
+
+- PHP y MySQL, con cualquier librería o framework a conveniencia
+
+Incluye un readme en el proyecto explicando tus decisiones en cuanto a tecnología usada o arquitectura, sube el código a un repositorio git  y pásanos la URL para que podamos ojearlo cuando acabes.
+
+
+Have fun!
+
 
 - Mejor https://www.codeofaninja.com/2017/02/create-simple-rest-api-in-php.html
 http://frikibloggeo.blogspot.com.es/2017/01/crear-un-web-service-api-rest-con-php-y.html

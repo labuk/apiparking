@@ -8,8 +8,6 @@ include_once 'test_utilities.php';
 
 echo 'Plato - test read()';
 $response = curl_get('localhost/elparking/controllers/read_plato.php');
-//$response = curl_exec ($handler);
-//curl_close($handler);
 var_dump($response);
 $stmt = json_decode($response, true);
 $num = count($stmt["platos"]);
@@ -18,7 +16,12 @@ echo 'Lectura correcta - Numero de platos: ', $num;
 
 echo '<br>';
 echo 'Plato - test create()';
-$data = array("nombre_plato" => "Arroz");
+$data = array("nombre_plato" => "Arroz",
+  "ingredientes" => array(
+       "1" => "1",
+       "2" => "3"
+       )
+);
 var_dump($data);
 $response = curl_post('localhost/elparking/controllers/create_plato.php', $data);
 //var_dump($response);
@@ -33,5 +36,55 @@ if($num == $num_post-1){
   echo 'Fallo funcion  create()';
 }
 
+echo 'Ingrediente - test read()';
+$response = curl_get('localhost/elparking/controllers/read_ingrediente.php');
+var_dump($response);
+$stmt = json_decode($response, true);
+$num = count($stmt["ingredientes"]);
+echo 'Lectura correcta - Numero de ingredientes: ', $num;
+
+
+echo '<br>';
+echo 'Ingrediente - test create()';
+$data = array("nombre_ingrediente" => "Arroz");
+var_dump($data);
+$response = curl_post('localhost/elparking/controllers/create_ingrediente.php', $data);
+//var_dump($response);
+$response = curl_get('localhost/elparking/controllers/read_ingrediente.php');
+$stmt = json_decode($response, true);
+$num_post = count($stmt["ingredientes"]);
+if($num == $num_post-1){
+  echo '<br>';
+  echo 'El ingrediente se ha creado.';
+  echo 'Valores: ' , var_dump($stmt["ingredientes"][$num_post-1]);
+} else {
+  echo 'Fallo funcion  create()';
+}
+
+
+echo 'Alergeno - test read()';
+$response = curl_get('localhost/elparking/controllers/read_alergeno.php');
+var_dump($response);
+$stmt = json_decode($response, true);
+$num = count($stmt["alergenos"]);
+echo 'Lectura correcta - Numero de alergenos: ', $num;
+
+
+echo '<br>';
+echo 'Alergeno - test create()';
+$data = array("nombre_alergeno" => "Arroz");
+var_dump($data);
+$response = curl_post('localhost/elparking/controllers/create_alergeno.php', $data);
+//var_dump($response);
+$response = curl_get('localhost/elparking/controllers/read_alergeno.php');
+$stmt = json_decode($response, true);
+$num_post = count($stmt["alergenos"]);
+if($num == $num_post-1){
+  echo '<br>';
+  echo 'El alergeno se ha creado.';
+  echo 'Valores: ' , var_dump($stmt["alergenos"][$num_post-1]);
+} else {
+  echo 'Fallo funcion  create()';
+}
 
 ?>
