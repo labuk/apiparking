@@ -25,8 +25,26 @@ class Plato{
         return $stmt;
     }
 
+    // Read One Plato = $id_plato
+    function readOne($id_plato){
+        // select query = id_plato
+        $query =  "SELECT plato.id_plato, plato.nombre_plato, ingrediente.nombre_ingrediente, alergeno.nombre_alergeno
+                  FROM plato
+                  INNER JOIN plato_ingrediente ON plato_ingrediente.id_plato = plato.id_plato
+                  INNER JOIN ingrediente ON ingrediente.id_ingrediente = plato_ingrediente.id_ingrediente
+                  LEFT JOIN ingrediente_alergeno ON ingrediente_alergeno.id_ingrediente = ingrediente.id_ingrediente
+                  LEFT JOIN alergeno ON alergeno.id_alergeno = ingrediente_alergeno.id_alergeno
+                  WHERE plato.id_plato = " . $id_plato;
+
+        // prepare query statement
+        $stmt = $this->conn->prepare($query);
+        // execute query
+        $stmt->execute();
+        return $stmt;
+    }
+
     // Create plato
-    function create(){
+    function create( $ingredientes ){
 
         // query to insert record
         $query = "INSERT INTO
@@ -45,7 +63,51 @@ class Plato{
 
         // execute query
         if($stmt->execute()) {
+          // Hay ingredientes?
+          //var_dump($stmt);
+
+          if(isset($ingredientes)){
+            $this->id_plato = $this->conn->lastInsertId();
+            if($this->add_ingrediente($ingredientes, $this->id_plato)){
+              return true;
+            };
+            // error
+            return false;
+          }else{
             return true;
+          }
+        }
+
+        // error
+        return false;
+
+    }
+
+    // Add ingrediente to plato
+    function add_ingrediente( $ingredientes, $id_plato ){
+
+      $sql = array();
+      foreach ( $ingredientes as $key => $value) {
+        // ()`id_plato`, `id_ingrediente`)
+        array_push ($sql, "(" . $id_plato . "," . $value . ")" );
+      }
+
+      $strg = implode(",", $sql);
+
+      //var_dump($this);
+
+        // query to insert record
+        $query = " INSERT INTO plato_ingrediente ( id_plato, id_ingrediente ) VALUES "
+                . $strg;
+
+        // prepare query
+        $stmt = $this->conn->prepare($query);
+        var_dump($stmt);
+
+        // execute query
+        if($stmt->execute()) {
+            return true;
+            echo 'Hecho';
         }
 
         // error

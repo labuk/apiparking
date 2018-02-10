@@ -20,7 +20,7 @@ $alergeno = new Alergeno($db);
 $data = json_decode(file_get_contents("php://input"));
 
 // Rellenar el objeto Alergeno
-var_dump($data);
+//var_dump($data);
 $alergeno->nombre_alergeno = $data->nombre_alergeno;
 
 // Query Alergeno - create()

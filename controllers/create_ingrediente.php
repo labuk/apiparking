@@ -20,7 +20,7 @@ $ingrediente = new Ingrediente($db);
 $data = json_decode(file_get_contents("php://input"));
 
 // Rellenar el objeto ingrediente
-var_dump($data);
+//var_dump($data);
 $ingrediente->nombre_ingrediente = $data->nombre_ingrediente;
 
 // Query ingrediente - create()

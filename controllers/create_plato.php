@@ -23,12 +23,25 @@ $data = json_decode(file_get_contents("php://input"));
 var_dump($data);
 $plato->nombre_plato = $data->nombre_plato;
 
-// Query Plato - create()
-if($plato->create()){
-        echo '{ "message": "Plato creado." }';
+if(isset($data->ingredientes)) {
+  // Query Plato - create($ingredientes)
+  if($plato->create($data->ingredientes)){
+          echo '{ "message": "Plato creado con ingredientes." }';
+  }
+  // error
+  else{
+          echo '{ "message": "No se ha podido crear plato." }';
+  }
+} else {
+  // Query Plato - create()
+  if($plato->create()){
+          echo '{ "message": "Plato creado." }';
+  }
+  // error
+  else{
+          echo '{ "message": "No se ha podido crear plato." }';
+  }
 }
-// error
-else{
-        echo '{ "message": "No se ha podido crear plato." }';
-}
+
+
 ?>
