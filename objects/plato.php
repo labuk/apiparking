@@ -114,10 +114,27 @@ class Plato{
 
     }
 
-    // Add ingrediente to plato
+    // Change ingrediente - plato
+    function readChange(  ){
+      $query =  "SELECT plato.nombre_plato, ingrediente.nombre_ingrediente, cambio_plato.delete_flag, cambio_plato.updateAt
+                FROM cambio_plato
+                INNER JOIN ingrediente ON ingrediente.id_ingrediente = cambio_plato.id_ingrediente
+                LEFT JOIN plato ON plato.id_plato = cambio_plato.id_plato
+                WHERE plato.id_plato = " . $this->id_plato . "
+                ORDER BY cambio_plato.updateAt DESC ";
+      // prepare query statement
+      $stmt = $this->conn->prepare($query);
+      // execute query
+      $stmt->execute();
+      return $stmt;
+    }
+
+
+    // Change ingrediente - plato
     function change_ingrediente( $ingredientes_add, $ingredientes_delete ){
       $flag_add = 1;
       $flag_delete = 1;
+      $date = Date("Y-m-d H:i:s");
 
       if(isset($ingredientes_delete)){
         $flag_delete = 0;
@@ -133,7 +150,21 @@ class Plato{
         $strg = implode(" , ", $sql);
         var_dump($strg);
 
-        // query to insert record
+        //Change - save id_ingrediente
+        $query =  "SELECT id_ingrediente
+                  FROM plato_ingrediente
+                  WHERE id_plato_ingrediente IN (" . $strg . ")";
+        // prepare query
+        $stmt = $this->conn->prepare($query);
+        // execute query
+        $stmt->execute();
+        $change_array = array();
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)){
+          extract($row);
+          array_push ($change_array, "(" . $this->id_plato . "," . $id_ingrediente . ", 1 ,'" . $date . "')" );
+        }
+
+        // query to delete record
         $query = " DELETE FROM plato_ingrediente WHERE id_plato_ingrediente IN ( "
                 . $strg . ")";
 
@@ -150,14 +181,47 @@ class Plato{
 
       if(isset($ingredientes_add)){
         $flag_add = 0;
-
         if($this->add_ingrediente($ingredientes_add, $this->id_plato )) {
           $flag_add=1;
+          foreach ( $ingredientes_add as $key => $value) {
+            array_push ($change_array, "(" . $this->id_plato . "," . $value . ", 0 ,'" . $date . "')" );
+          }
         }
       }
 
       if ($flag_add==1 || $flag_delete==1){
+        $change_array = implode(" , ", $change_array);
+        var_dump($change_array);
+        // query to insert record
+        $query = " INSERT INTO cambio_plato ( id_plato, id_ingrediente, delete_flag, updateAt ) VALUES "
+                . $change_array;
+        // prepare query
+        $stmt = $this->conn->prepare($query);
+        var_dump($stmt);
+        // execute query
+        $stmt->execute();
         return true;
+      }
+
+      // error
+      return false;
+
+    }
+
+    // Delete Plato
+    function delete(){
+
+      // query to delete record
+      $query = " DELETE FROM plato WHERE id_plato = "
+                . $this->id_plato ;
+
+      // prepare query
+      $stmt = $this->conn->prepare($query);
+      var_dump($stmt);
+
+      // execute query
+      if($stmt->execute()) {
+          return true;
       }
 
       // error

@@ -112,6 +112,27 @@ class Ingrediente{
 
     }
 
+    // Delete Ingrediente
+    function delete(){
+
+      // query to delete record
+      $query = " DELETE FROM ingrediente WHERE id_ingrediente = "
+                . $this->id_ingrediente ;
+
+      // prepare query
+      $stmt = $this->conn->prepare($query);
+      var_dump($stmt);
+
+      // execute query
+      if($stmt->execute()) {
+          return true;
+      }
+
+      // error
+      return false;
+
+    }
+
 
 }
 ?>

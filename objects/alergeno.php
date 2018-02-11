@@ -70,5 +70,26 @@ class Alergeno{
 
     }
 
+    // Delete Alergeno
+    function delete(){
+
+      // query to delete record
+      $query = " DELETE FROM alergeno WHERE id_alergeno = "
+                . $this->id_alergeno ;
+
+      // prepare query
+      $stmt = $this->conn->prepare($query);
+      var_dump($stmt);
+
+      // execute query
+      if($stmt->execute()) {
+          return true;
+      }
+
+      // error
+      return false;
+
+    }
+
 }
 ?>
