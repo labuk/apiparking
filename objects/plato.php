@@ -28,7 +28,7 @@ class Plato{
     // Read One Plato = $id_plato
     function readOne($id_plato){
         // select query = id_plato
-        $query =  "SELECT plato.id_plato, plato.nombre_plato, ingrediente.nombre_ingrediente, alergeno.nombre_alergeno
+        $query =  "SELECT plato.id_plato, plato.nombre_plato, ingrediente.nombre_ingrediente, plato_ingrediente.id_plato_ingrediente ,alergeno.nombre_alergeno
                   FROM plato
                   INNER JOIN plato_ingrediente ON plato_ingrediente.id_plato = plato.id_plato
                   INNER JOIN ingrediente ON ingrediente.id_ingrediente = plato_ingrediente.id_ingrediente
@@ -44,7 +44,7 @@ class Plato{
     }
 
     // Create plato
-    function create( $ingredientes ){
+    function create( $ingredientes = null ){
 
         // query to insert record
         $query = "INSERT INTO
@@ -65,7 +65,6 @@ class Plato{
         if($stmt->execute()) {
           // Hay ingredientes?
           //var_dump($stmt);
-
           if(isset($ingredientes)){
             $this->id_plato = $this->conn->lastInsertId();
             if($this->add_ingrediente($ingredientes, $this->id_plato)){
@@ -88,7 +87,7 @@ class Plato{
 
       $sql = array();
       foreach ( $ingredientes as $key => $value) {
-        // ()`id_plato`, `id_ingrediente`)
+        // (`id_plato`, `id_ingrediente`)
         array_push ($sql, "(" . $id_plato . "," . $value . ")" );
       }
 
@@ -112,6 +111,57 @@ class Plato{
 
         // error
         return false;
+
+    }
+
+    // Add ingrediente to plato
+    function change_ingrediente( $ingredientes_add, $ingredientes_delete ){
+      $flag_add = 1;
+      $flag_delete = 1;
+
+      if(isset($ingredientes_delete)){
+        $flag_delete = 0;
+
+        var_dump( $ingredientes_delete );
+
+        $sql = array();
+        foreach ( $ingredientes_delete as $key => $value) {
+          // (`id_ingrediente`)
+          array_push ($sql,  $value );
+        }
+
+        $strg = implode(" , ", $sql);
+        var_dump($strg);
+
+        // query to insert record
+        $query = " DELETE FROM plato_ingrediente WHERE id_plato_ingrediente IN ( "
+                . $strg . ")";
+
+        // prepare query
+        $stmt = $this->conn->prepare($query);
+        var_dump($stmt);
+
+        // execute query
+        if($stmt->execute()) {
+          $flag_delete=1;
+        }
+
+      }
+
+      if(isset($ingredientes_add)){
+        $flag_add = 0;
+
+        if($this->add_ingrediente($ingredientes_add, $this->id_plato )) {
+          $flag_add=1;
+        }
+      }
+
+      if ($flag_add==1 || $flag_delete==1){
+        return true;
+      }
+
+      // error
+      return false;
 
     }
 

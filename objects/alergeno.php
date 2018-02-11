@@ -25,6 +25,23 @@ class Alergeno{
         return $stmt;
     }
 
+    // Read One Alergeno = $id_alergeno
+    function readOne($id_alergeno){
+        // select query = id_alergeno
+        $query =  "SELECT alergeno.id_alergeno, alergeno.nombre_alergeno, plato.nombre_plato
+                  FROM alergeno
+                  INNER JOIN ingrediente_alergeno ON ingrediente_alergeno.id_alergeno = alergeno.id_alergeno
+                  INNER JOIN plato_ingrediente ON plato_ingrediente.id_ingrediente = ingrediente_alergeno.id_ingrediente
+                  INNER JOIN plato ON plato.id_plato = plato_ingrediente.id_plato
+                  WHERE alergeno.id_alergeno = " . $id_alergeno;
+
+        // prepare query statement
+        $stmt = $this->conn->prepare($query);
+        // execute query
+        $stmt->execute();
+        return $stmt;
+    }
+
     // Create alergeno
     function create(){
 

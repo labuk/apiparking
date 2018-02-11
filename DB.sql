@@ -21,7 +21,9 @@ CREATE TABLE IF NOT EXISTS `ingrediente` (
 -- Datos iniciales tabla
 INSERT INTO `ingrediente` (`id_ingrediente`, `nombre_ingrediente`) VALUES
 (1, "Yogurt"),
-(2, "Nuez");
+(2, "Nuez"),
+(3, "Leche"),
+(4, "Arroz");
 
 --
 -- Estructura de tabla para `alergeno`
@@ -35,7 +37,8 @@ CREATE TABLE IF NOT EXISTS `alergeno` (
 INSERT INTO `alergeno` (`id_alergeno`, `nombre_alergeno`) VALUES
 (1, "Lactosa"),
 (2, "Proteina leche"),
-(3, "Fruto seco");
+(3, "Fruto seco"),
+(4, "Proteina arroz");
 --
 -- Estructura de tabla para la tabla `plato_ingrediente`
 --
@@ -61,4 +64,7 @@ CREATE TABLE IF NOT EXISTS `ingrediente_alergeno` (
 INSERT INTO `ingrediente_alergeno` (`id_ingrediente_alergeno`, `id_ingrediente`, `id_alergeno`) VALUES
 (1, 1, 1),
 (2, 1, 2),
-(3, 2, 3);
+(3, 2, 3),
+(4, 3, 1),
+(5, 3, 2),
+(6, 4, 4);

@@ -40,7 +40,8 @@ if($num>0){
         array_push($platos_arr["plato"], $plato_item);
 
         $ingrediente_item=array(
-            $nombre_ingrediente
+          "id_plato_ingrediente" => $id_plato_ingrediente,
+          "nombre_ingrediente" => $nombre_ingrediente
         );
         array_push($platos_arr["ingredientes"], $ingrediente_item);
 
@@ -49,11 +50,12 @@ if($num>0){
               $nombre_alergeno
           );
           array_push($platos_arr["alergenos"], $alergeno_item);
-        }      
+        }
 
     }
 
     // Eliminamos duplicados
+    $platos_arr["alergenos"] = array_unique($platos_arr["alergenos"], SORT_REGULAR);
     $platos_arr["ingredientes"] = array_unique($platos_arr["ingredientes"], SORT_REGULAR);
     $platos_arr["plato"] = array_unique($platos_arr["plato"], SORT_REGULAR);
     // Reseteamos key

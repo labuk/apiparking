@@ -23,12 +23,25 @@ $data = json_decode(file_get_contents("php://input"));
 //var_dump($data);
 $ingrediente->nombre_ingrediente = $data->nombre_ingrediente;
 
-// Query ingrediente - create()
-if($ingrediente->create()){
-        echo '{ "message": "ingrediente creado." }';
+if(isset($data->alergenos)) {
+  // Query Plato - create($alergenos)
+  if($ingrediente->create($data->alergenos)){
+          echo '{ "message": "Alergeno creado con ingredientes." }';
+  }
+  // error
+  else{
+          echo '{ "message": "No se ha podido crear ingrediente." }';
+  }
+} else {
+  // Query ingrediente - create()
+  if($ingrediente->create()){
+          echo '{ "message": "Ingrediente creado." }';
+  }
+  // error
+  else{
+          echo '{ "message": "No se ha podido crear ingrediente." }';
+  }
 }
-// error
-else{
-        echo '{ "message": "No se ha podido crear ingrediente." }';
-}
+
+
 ?>
