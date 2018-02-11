@@ -82,10 +82,10 @@ INSERT INTO `ingrediente_alergeno` (`id_ingrediente_alergeno`, `id_ingrediente`,
 -- Estructura de tabla para `plato`
 --
 CREATE TABLE IF NOT EXISTS `cambio_plato` (
-  `id_cabio_plato` int(11) NOT NULL AUTO_INCREMENT,
+  `id_cambio_plato` int(11) NOT NULL AUTO_INCREMENT,
   `id_plato` int(11) NOT NULL,
   `id_ingrediente` int(11) NOT NULL,
   `delete_flag` tinyint(1) NOT NULL, -- add=0 , delete=1
-  `updateAt` DATETIME() NOT NULL,
+  `updateAt` DATETIME NOT NULL,
   PRIMARY KEY (`id_cambio_plato`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
